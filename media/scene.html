@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chip Input media scene</title>
+<link rel="stylesheet" href="/src/chip-input.css">
+<style>
+  html, body { margin: 0; height: 100%; }
+  body { display: grid; place-items: center; background: #17120f; color: #eadfd3; font-family: system-ui, sans-serif; }
+  main { width: 620px; }
+  h1 { font-size: 36px; font-weight: 500; margin: 0 0 6px; letter-spacing: -0.5px; text-align: center; }
+  .sub { font-size: 17px; color: #b8a99a; margin: 0 0 22px; text-align: center; }
+  #chips { --ci-bg: #1f1915; }
+  #chips .chip-input { font-size: 17px; }
+  #chips .chip-input__field { padding: 10px; min-height: 60px; }
+  #chips .chip-input__chip { height: 38px; }
+  #chips .chip-input__input { height: 38px; }
+  #msg { height: 24px; margin: 14px 0 0; text-align: center; color: #f3c77a; font-size: 16px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Chip Input</h1>
+  <p class="sub">Type, paste, or pull a tag back</p>
+  <div id="chips"></div>
+  <p id="msg"></p>
+</main>
+<script type="module">
+  import { ChipInput } from '/src/chip-input.js';
+  window.chips = new ChipInput(document.getElementById('chips'), { label: 'Topics', placeholder: 'Add a topic…', max: 8 });
+  new MutationObserver(() => { document.getElementById('msg').textContent = document.querySelector('[role=status]').textContent; })
+    .observe(document.querySelector('[role=status]'), { childList: true, characterData: true, subtree: true });
+</script>
+</body>
+</html>

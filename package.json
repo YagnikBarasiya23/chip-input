@@ -1,0 +1,32 @@
+{
+  "name": "chip-input",
+  "version": "1.0.0",
+  "description": "A tag field where typed words become paper tags; paste splits on commas and newlines, Backspace pulls the last tag back to edit.",
+  "type": "module",
+  "main": "./dist/chip-input.umd.cjs",
+  "module": "./dist/chip-input.js",
+  "style": "./dist/chip-input.css",
+  "exports": {
+    ".": { "import": "./dist/chip-input.js", "require": "./dist/chip-input.umd.cjs" },
+    "./style.css": "./dist/chip-input.css"
+  },
+  "sideEffects": false,
+  "files": ["dist", "README.md", "LICENSE"],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/copy-assets.mjs",
+    "test": "node --test test/*.test.js",
+    "size": "node test/size.mjs"
+  },
+  "keywords": ["tags", "chips", "tag-input", "chip-input", "form", "vanilla-js", "accessible"],
+  "repository": { "type": "git", "url": "git+https://github.com/YagnikBarasiya23/chip-input.git" },
+  "homepage": "https://github.com/YagnikBarasiya23/chip-input#readme",
+  "bugs": { "url": "https://github.com/YagnikBarasiya23/chip-input/issues" },
+  "author": "Yagnik Barasiya",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "axe-core": "^4.10.0",
+    "vite": "^7.0.0"
+  }
+}

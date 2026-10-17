@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chip Input demo</title>
+<link rel="stylesheet" href="/src/chip-input.css">
+<style>
+  body { font-family: system-ui, sans-serif; background: #f6f1ea; color: #3a2a20; margin: 0; padding: 40px 16px; }
+  @media (prefers-color-scheme: dark) { body { background: #17120f; color: #eadfd3; } }
+  main { max-width: 520px; margin: 0 auto; }
+  label { display: block; font-weight: 500; margin-bottom: 8px; }
+  button { font: inherit; padding: 6px 14px; margin-top: 12px; }
+  pre { min-height: 1.4em; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Chip Input</h1>
+  <form id="f">
+    <label id="lbl">Topics</label>
+    <div id="chips"></div>
+    <button type="submit">Save</button>
+  </form>
+  <pre id="out"></pre>
+</main>
+<script type="module">
+  import { ChipInput } from '/src/chip-input.js';
+  const q = new URLSearchParams(location.search);
+  const num = (k) => (q.has(k) ? Number(q.get(k)) : undefined);
+  const host = document.getElementById('chips');
+  if (q.get('theme')) host.dataset.theme = q.get('theme');
+  window.changes = [];
+  window.chips = new ChipInput(host, {
+    label: 'Topics',
+    name: 'topics',
+    values: q.get('values') ? q.get('values').split(',') : undefined,
+    max: num('max'),
+    allowDuplicates: q.get('dups') === '1',
+    suggestions: q.get('sugg') === '1' ? ['design', 'research', 'redesign', 'prototype', 'accessibility', 'motion', 'typography'] : undefined,
+    validate: q.get('validate') === '1' ? (v) => (v.length < 2 ? 'Use two or more characters.' : true) : undefined,
+    onChange: (vals, info) => window.changes.push([info.type, vals])
+  });
+  document.getElementById('f').addEventListener('submit', (e) => {
+    e.preventDefault();
+    window.submitted = new FormData(e.target).getAll('topics');
+    document.getElementById('out').textContent = JSON.stringify(window.submitted);
+  });
+</script>
+</body>
+</html>
