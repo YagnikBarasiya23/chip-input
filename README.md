@@ -1,5 +1,7 @@
 # Chip Input
 
+> npm package name: `paper-tag-input`.
+
 [![MIT licence](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE)
 
 A tag field where typed words become paper tags. Paste splits on commas and newlines, Backspace on an empty field pulls the last tag back so you can edit it.
@@ -11,7 +13,7 @@ Plain HTML, CSS and JS. Zero dependencies. No image files: the tags are drawn in
 ## Install
 
 ```sh
-npm install chip-input
+npm install paper-tag-input
 ```
 
 or copy `dist/` into your project.
