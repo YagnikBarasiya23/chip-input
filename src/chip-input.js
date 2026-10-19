@@ -14,6 +14,7 @@ export class ChipInput {
     if (!target) throw new TypeError('ChipInput: target element is required');
     this.target = target;
     this.opts = { label: 'Tags', placeholder: 'Add a tag…', delimiters: [','], allowDuplicates: false, ...options };
+    this.variant = options.variant === 'stamp' ? 'stamp' : 'paper';
     this.max = Number.isFinite(options.max) && options.max > 0 ? Math.floor(options.max) : Infinity;
     this._values = [];
     this._chips = new Map();
@@ -106,7 +107,7 @@ export class ChipInput {
   _build() {
     const o = this.opts;
     const id = this._id;
-    const root = (this.root = el('div', 'chip-input'));
+    const root = (this.root = el('div', `chip-input chip-input--${this.variant}`));
     const field = (this.field = el('div', 'chip-input__field'));
     const list = (this.list = el('ul', 'chip-input__chips', { 'aria-label': `${o.label}, added` }));
     const input = (this.input = el('input', 'chip-input__input', { type: 'text', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', enterkeyhint: 'enter', 'aria-label': o.label }));
@@ -163,7 +164,7 @@ export class ChipInput {
     if (!li) return;
     if (reduced()) return li.remove();
     li.classList.add('is-leaving');
-    this._later(() => li.remove(), 260);
+    this._later(() => li.remove(), this.variant === 'stamp' ? 360 : 260);
   }
 
   _flash(v) {

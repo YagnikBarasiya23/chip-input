@@ -4,7 +4,7 @@
 
 [![MIT licence](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE)
 
-A tag field where typed words become paper tags. Paste splits on commas and newlines, Backspace on an empty field pulls the last tag back so you can edit it.
+A tag field where typed words become paper tags, or ink stamps with `variant: 'stamp'`. Paste splits on commas and newlines, Backspace on an empty field pulls the last tag back so you can edit it.
 
 ![Chip Input demo](media/demo.gif)
 
@@ -42,6 +42,7 @@ A UMD build (`dist/chip-input.umd.cjs`) exposes the global `ChipInput.ChipInput`
 
 | Option | Default | Description |
 |---|---|---|
+| `variant` | `'paper'` | `'paper'` for paper tags that swing from a punched hole, `'stamp'` for ink stamps that slam down, smear away and double-thump on a duplicate |
 | `values` | `[]` | Starting tags (trimmed, duplicates and blanks dropped) |
 | `max` | none | Maximum number of tags. Extra items are skipped and announced |
 | `validate(value, values)` | none | Return `false` or an error string to reject; `true` or nothing to accept |
@@ -91,6 +92,9 @@ Set these on the `.chip-input` element or any ancestor:
 | `--ci-edge` | Tag outline and hole |
 | `--ci-tag-text` | Tag text |
 | `--ci-accent` | Focus ring (default `#378add`) |
+| `--ci-ink` | Stamp ink colour (`variant: 'stamp'` only) |
+
+The root element gets `chip-input--paper` or `chip-input--stamp` so you can scope your own overrides.
 
 Colours follow `prefers-color-scheme`. Force a theme with `data-theme="light"` or `data-theme="dark"` on the element or any ancestor. When `max` is nearly reached the field border takes the tag outline colour (`.is-nearly-full`); at the limit it gets `.is-full`.
 
@@ -102,7 +106,7 @@ Colours follow `prefers-color-scheme`. Force a theme with `data-theme="light"` o
 - Rejected input sets `aria-invalid` until the next keystroke.
 - IME composition is respected, including Safari's out-of-order confirming Enter.
 - Some Android keyboards send no useful keydown for comma or Enter; the field also commits when the text changes to include a delimiter.
-- `prefers-reduced-motion` replaces the swing and flutter with a brief glow.
+- `prefers-reduced-motion` replaces the swing, flutter, stamp and smear with a brief glow.
 
 ## Browser support
 

@@ -51,7 +51,7 @@ const v = () => matchMedia("(prefers-reduced-motion: reduce)").matches, c = (n, 
 class w {
   constructor(t, e = {}) {
     if (!t) throw new TypeError("ChipInput: target element is required");
-    this.target = t, this.opts = { label: "Tags", placeholder: "Add a tag…", delimiters: [","], allowDuplicates: !1, ...e }, this.max = Number.isFinite(e.max) && e.max > 0 ? Math.floor(e.max) : 1 / 0, this._values = [], this._chips = /* @__PURE__ */ new Map(), this._timers = /* @__PURE__ */ new Set(), this._off = [], this._id = `ci${++x}`, this._composing = !1, this._active = -1, this._sugg = [], this._build();
+    this.target = t, this.opts = { label: "Tags", placeholder: "Add a tag…", delimiters: [","], allowDuplicates: !1, ...e }, this.variant = e.variant === "stamp" ? "stamp" : "paper", this.max = Number.isFinite(e.max) && e.max > 0 ? Math.floor(e.max) : 1 / 0, this._values = [], this._chips = /* @__PURE__ */ new Map(), this._timers = /* @__PURE__ */ new Set(), this._off = [], this._id = `ci${++x}`, this._composing = !1, this._active = -1, this._sugg = [], this._build();
     const i = g([], e.values || [], this._rules());
     this._values = i.values, i.added.forEach((s) => this._addChip(s, !1)), this._initial = this._values.slice(), this._sync();
   }
@@ -98,7 +98,7 @@ class w {
     this._timers.add(i);
   }
   _build() {
-    const t = this.opts, e = this._id, i = this.root = c("div", "chip-input"), s = this.field = c("div", "chip-input__field"), a = this.list = c("ul", "chip-input__chips", { "aria-label": `${t.label}, added` }), l = this.input = c("input", "chip-input__input", { type: "text", autocomplete: "off", autocapitalize: "off", spellcheck: "false", enterkeyhint: "enter", "aria-label": t.label });
+    const t = this.opts, e = this._id, i = this.root = c("div", `chip-input chip-input--${this.variant}`), s = this.field = c("div", "chip-input__field"), a = this.list = c("ul", "chip-input__chips", { "aria-label": `${t.label}, added` }), l = this.input = c("input", "chip-input__input", { type: "text", autocomplete: "off", autocapitalize: "off", spellcheck: "false", enterkeyhint: "enter", "aria-label": t.label });
     l.placeholder = t.placeholder;
     const d = this.status = c("div", "chip-input__status", { role: "status", "aria-live": "polite" });
     this.hidden = c("div", "chip-input__hidden"), s.append(a, l), i.append(s, this.hidden, d), t.suggestions && (l.setAttribute("role", "combobox"), l.setAttribute("aria-autocomplete", "list"), l.setAttribute("aria-expanded", "false"), l.setAttribute("aria-controls", `${e}-lb`), this.lb = c("ul", "chip-input__list", { id: `${e}-lb`, role: "listbox", "aria-label": `${t.label} suggestions`, hidden: "" }), i.appendChild(this.lb)), this.target.appendChild(i);
@@ -134,7 +134,7 @@ class w {
   _leave(t) {
     if (t) {
       if (v()) return t.remove();
-      t.classList.add("is-leaving"), this._later(() => t.remove(), 260);
+      t.classList.add("is-leaving"), this._later(() => t.remove(), this.variant === "stamp" ? 360 : 260);
     }
   }
   _flash(t) {

@@ -23,6 +23,7 @@
     <button type="submit">Save</button>
   </form>
   <pre id="out"></pre>
+  <p>Look: <a href="?">Paper tags</a> · <a href="?variant=stamp">Ink stamp</a></p>
 </main>
 <script type="module">
   import { ChipInput } from '/src/chip-input.js';
@@ -33,6 +34,7 @@
   window.changes = [];
   window.chips = new ChipInput(host, {
     label: 'Topics',
+    variant: q.get('variant') || undefined,
     name: 'topics',
     values: q.get('values') ? q.get('values').split(',') : undefined,
     max: num('max'),

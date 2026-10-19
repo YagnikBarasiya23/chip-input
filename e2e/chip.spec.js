@@ -381,6 +381,38 @@ test('motion on by default: new tag swings, removed tag leaves', async ({ page }
   await expect(page.locator('.chip-input__chip')).toHaveCount(0);
 });
 
+test('stamp variant: class, ink colour, stamp in, smear out, thump on duplicate', async ({ page }) => {
+  await page.goto('/?variant=stamp&values=design');
+  await expect(page.locator('.chip-input')).toHaveClass(/chip-input--stamp/);
+  await expect(page.locator('.chip-input__hole').first()).toBeHidden();
+  const ink = await chips(page).first().evaluate((e) => getComputedStyle(e).color);
+  expect(ink).toBe('rgb(163, 45, 45)');
+  await input(page).click();
+  await page.keyboard.type('motion');
+  await page.keyboard.press('Enter');
+  expect(await chips(page).last().evaluate((e) => getComputedStyle(e).animationName)).toBe('ci-stamp');
+  await page.keyboard.type('DESIGN,');
+  expect(await chips(page).first().evaluate((e) => getComputedStyle(e).animationName)).toBe('ci-thump');
+  await page.getByRole('button', { name: 'Remove motion' }).click();
+  const leaving = page.locator('.chip-input__chip.is-leaving');
+  expect(await leaving.evaluate((e) => getComputedStyle(e).animationName)).toBe('ci-smear');
+  await expect(leaving).toHaveCount(0);
+  expect(await vals(page)).toEqual(['design']);
+});
+
+test('stamp variant: reduced motion removes immediately, dark ink applies', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/?variant=stamp&values=a1,b2&theme=dark');
+  expect(await chips(page).first().evaluate((e) => getComputedStyle(e).color)).toBe('rgb(240, 149, 149)');
+  await page.getByRole('button', { name: 'Remove a1' }).click();
+  await expect(page.locator('.chip-input__chip')).toHaveCount(1);
+});
+
+test('unknown variant falls back to paper', async ({ page }) => {
+  await page.goto('/?variant=nope');
+  await expect(page.locator('.chip-input')).toHaveClass(/chip-input--paper/);
+});
+
 for (const theme of ['light', 'dark']) {
   test(`theme ${theme}`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: theme === 'dark' ? 'light' : 'dark' });
@@ -419,3 +451,11 @@ test('axe: no violations (empty, with tags, suggestions open)', async ({ page })
   await page.evaluate(() => window.chips.clear());
   expect(await run()).toEqual([]);
 });
+
+for (const theme of ['light', 'dark']) {
+  test(`axe: stamp variant has no violations (${theme})`, async ({ page }) => {
+    await page.goto(`/?variant=stamp&sugg=1&values=design,motion,research&theme=${theme}`);
+    await page.evaluate(axeSrc);
+    expect(await page.evaluate(async () => (await axe.run()).violations.map((v) => `${v.id}: ${v.nodes[0].html.slice(0, 90)}`))).toEqual([]);
+  });
+}

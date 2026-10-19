@@ -1,7 +1,7 @@
 {
   "name": "paper-tag-input",
-  "version": "1.0.0",
-  "description": "A tag field where typed words become paper tags; paste splits on commas and newlines, Backspace pulls the last tag back to edit.",
+  "version": "1.1.0",
+  "description": "A tag field where typed words become paper tags or ink stamps; paste splits on commas and newlines, Backspace pulls the last tag back to edit.",
   "type": "module",
   "main": "./dist/chip-input.umd.cjs",
   "module": "./dist/chip-input.js",
@@ -31,6 +31,7 @@
     "chips",
     "form",
     "paper-tags",
+    "stamp",
     "tag-input",
     "tags",
     "vanilla-js"
