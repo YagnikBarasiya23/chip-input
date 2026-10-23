@@ -135,6 +135,7 @@ export class ChipInput {
     on(input, 'compositionend', () => { this._composing = false; this._suggest(); });
     on(input, 'blur', () => { this._commitText(); this._closeSugg(); });
     on(list, 'keydown', (e) => this._chipKey(e));
+    on(list, 'animationend', (e) => e.target.classList.remove('is-new'));
     on(list, 'click', (e) => {
       const b = e.target.closest('.chip-input__remove');
       if (b) { this.remove(b.parentNode.dataset.value); input.focus(); }
@@ -178,7 +179,15 @@ export class ChipInput {
 
   _sync() {
     const n = this._values.length;
-    this._values.forEach((v) => this.list.appendChild(this._chips.get(keyOf(v))));
+    // Move only chips that are out of place: moving a node restarts its animation.
+    // Leaving chips are skipped so they exit from where they stood.
+    let at = this.list.firstChild;
+    this._values.forEach((v) => {
+      const li = this._chips.get(keyOf(v));
+      while (at && at.classList.contains('is-leaving')) at = at.nextSibling;
+      if (li === at) at = at.nextSibling;
+      else this.list.insertBefore(li, at);
+    });
     this.root.classList.toggle('is-full', n >= this.max);
     this.root.classList.toggle('is-nearly-full', this.max !== Infinity && n < this.max && n >= Math.ceil(this.max * 0.8));
     this.input.placeholder = n ? '' : this.opts.placeholder;

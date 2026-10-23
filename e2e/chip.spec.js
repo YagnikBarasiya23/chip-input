@@ -381,6 +381,46 @@ test('motion on by default: new tag swings, removed tag leaves', async ({ page }
   await expect(page.locator('.chip-input__chip')).toHaveCount(0);
 });
 
+for (const variant of ['paper', 'stamp']) {
+  test(`${variant}: earlier tags do not replay their entrance on later add, duplicate, pull-back or remove`, async ({ page }) => {
+    const running = (v) => page.locator(`.chip-input__chip[data-value="${v}"]`).evaluate((e) => e.getAnimations().map((a) => a.animationName));
+    await page.goto(`/?variant=${variant}&values=design`);
+    await input(page).click();
+    await page.keyboard.type('research');
+    await page.keyboard.press('Enter');
+    await page.waitForTimeout(700);
+    await expect(page.locator('.chip-input__chip[data-value=research]')).not.toHaveClass(/is-new/);
+    await page.keyboard.type('design');
+    await page.keyboard.press('Enter');
+    expect(await running('research')).toEqual([]);
+    await page.keyboard.type('motion');
+    await page.keyboard.press('Enter');
+    expect(await running('research')).toEqual([]);
+    await page.waitForTimeout(700);
+    await page.keyboard.press('Backspace');
+    expect(await running('research')).toEqual([]);
+    expect(await running('design')).toEqual([]);
+    await input(page).fill('');
+    await page.getByRole('button', { name: 'Remove design' }).click();
+    expect(await running('research')).toEqual([]);
+  });
+
+  test(`${variant}: a removed tag leaves from its own place in the row`, async ({ page }) => {
+    const order = () => page.locator('.chip-input__chips').evaluate((l) => [...l.children].map((li) => li.dataset.value + (li.classList.contains('is-leaving') ? '!' : '')));
+    await page.goto(`/?variant=${variant}&values=a,b,c,d`);
+    await page.getByRole('button', { name: 'Remove b' }).click();
+    expect(await order()).toEqual(['a', 'b!', 'c', 'd']);
+    await page.locator('.chip-input__chip[data-value=c]').focus();
+    await page.keyboard.press('Delete');
+    expect(await order()).toEqual(['a', 'b!', 'c!', 'd']);
+    await expect(page.locator('.chip-input__chip.is-leaving')).toHaveCount(0);
+    expect(await order()).toEqual(['a', 'd']);
+    await input(page).click();
+    await page.keyboard.type('e,');
+    expect(await order()).toEqual(['a', 'd', 'e']);
+  });
+}
+
 test('stamp variant: class, ink colour, stamp in, smear out, thump on duplicate', async ({ page }) => {
   await page.goto('/?variant=stamp&values=design');
   await expect(page.locator('.chip-input')).toHaveClass(/chip-input--stamp/);

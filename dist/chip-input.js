@@ -4,11 +4,11 @@ function m(n, t = [","]) {
   return String(n ?? "").split(new RegExp(`[${e}\\r\\n]+`)).map(p).filter(Boolean);
 }
 function g(n, t, { max: e = 1 / 0, allowDuplicates: i = !1, validate: s } = {}) {
-  const a = n.slice(), l = new Set(a.map(o)), d = [], r = { duplicate: [], invalid: [], max: [] }, _ = [];
-  for (const h of t) {
-    const u = p(h);
+  const a = n.slice(), h = new Set(a.map(o)), d = [], r = { duplicate: [], invalid: [], max: [] }, f = [];
+  for (const l of t) {
+    const u = p(l);
     if (u) {
-      if (!i && l.has(o(u))) {
+      if (!i && h.has(o(u))) {
         r.duplicate.push(u);
         continue;
       }
@@ -17,16 +17,16 @@ function g(n, t, { max: e = 1 / 0, allowDuplicates: i = !1, validate: s } = {}) 
         continue;
       }
       if (s) {
-        const f = s(u, a.slice());
-        if (f === !1 || typeof f == "string") {
-          r.invalid.push(u), _.push(typeof f == "string" ? f : `${u} is not valid.`);
+        const _ = s(u, a.slice());
+        if (_ === !1 || typeof _ == "string") {
+          r.invalid.push(u), f.push(typeof _ == "string" ? _ : `${u} is not valid.`);
           continue;
         }
       }
-      a.push(u), l.add(o(u)), d.push(u);
+      a.push(u), h.add(o(u)), d.push(u);
     }
   }
-  return { values: a, added: d, skipped: r, errors: _ };
+  return { values: a, added: d, skipped: r, errors: f };
 }
 function y(n, t, e) {
   if (t < 0 || t >= n.length || e < 0 || e >= n.length || t === e) return n.slice();
@@ -34,8 +34,8 @@ function y(n, t, e) {
   return i.splice(e, 0, s), i;
 }
 function b(n, t, e, i = !1, s = 8) {
-  const a = o(t), l = new Set(i ? [] : e.map(o)), d = n.map(p).filter((h) => h && !l.has(o(h))), r = d.filter((h) => o(h).startsWith(a)), _ = d.filter((h) => !o(h).startsWith(a) && o(h).includes(a));
-  return [...r, ..._].slice(0, s);
+  const a = o(t), h = new Set(i ? [] : e.map(o)), d = n.map(p).filter((l) => l && !h.has(o(l))), r = d.filter((l) => o(l).startsWith(a)), f = d.filter((l) => !o(l).startsWith(a) && o(l).includes(a));
+  return [...r, ...f].slice(0, s);
 }
 function k(n, t) {
   const e = n.added.length, i = n.skipped.duplicate.length + n.skipped.invalid.length + n.skipped.max.length;
@@ -98,30 +98,30 @@ class w {
     this._timers.add(i);
   }
   _build() {
-    const t = this.opts, e = this._id, i = this.root = c("div", `chip-input chip-input--${this.variant}`), s = this.field = c("div", "chip-input__field"), a = this.list = c("ul", "chip-input__chips", { "aria-label": `${t.label}, added` }), l = this.input = c("input", "chip-input__input", { type: "text", autocomplete: "off", autocapitalize: "off", spellcheck: "false", enterkeyhint: "enter", "aria-label": t.label });
-    l.placeholder = t.placeholder;
+    const t = this.opts, e = this._id, i = this.root = c("div", `chip-input chip-input--${this.variant}`), s = this.field = c("div", "chip-input__field"), a = this.list = c("ul", "chip-input__chips", { "aria-label": `${t.label}, added` }), h = this.input = c("input", "chip-input__input", { type: "text", autocomplete: "off", autocapitalize: "off", spellcheck: "false", enterkeyhint: "enter", "aria-label": t.label });
+    h.placeholder = t.placeholder;
     const d = this.status = c("div", "chip-input__status", { role: "status", "aria-live": "polite" });
-    this.hidden = c("div", "chip-input__hidden"), s.append(a, l), i.append(s, this.hidden, d), t.suggestions && (l.setAttribute("role", "combobox"), l.setAttribute("aria-autocomplete", "list"), l.setAttribute("aria-expanded", "false"), l.setAttribute("aria-controls", `${e}-lb`), this.lb = c("ul", "chip-input__list", { id: `${e}-lb`, role: "listbox", "aria-label": `${t.label} suggestions`, hidden: "" }), i.appendChild(this.lb)), this.target.appendChild(i);
-    const r = (h, u, f) => {
-      h.addEventListener(u, f), this._off.push(() => h.removeEventListener(u, f));
+    this.hidden = c("div", "chip-input__hidden"), s.append(a, h), i.append(s, this.hidden, d), t.suggestions && (h.setAttribute("role", "combobox"), h.setAttribute("aria-autocomplete", "list"), h.setAttribute("aria-expanded", "false"), h.setAttribute("aria-controls", `${e}-lb`), this.lb = c("ul", "chip-input__list", { id: `${e}-lb`, role: "listbox", "aria-label": `${t.label} suggestions`, hidden: "" }), i.appendChild(this.lb)), this.target.appendChild(i);
+    const r = (l, u, _) => {
+      l.addEventListener(u, _), this._off.push(() => l.removeEventListener(u, _));
     };
-    r(s, "mousedown", (h) => {
-      (h.target === s || h.target === a) && (h.preventDefault(), l.focus());
-    }), r(l, "keydown", (h) => this._inKey(h)), r(l, "input", () => this._onInput()), r(l, "paste", (h) => this._onPaste(h)), r(l, "compositionstart", () => {
+    r(s, "mousedown", (l) => {
+      (l.target === s || l.target === a) && (l.preventDefault(), h.focus());
+    }), r(h, "keydown", (l) => this._inKey(l)), r(h, "input", () => this._onInput()), r(h, "paste", (l) => this._onPaste(l)), r(h, "compositionstart", () => {
       this._composing = !0;
-    }), r(l, "compositionend", () => {
+    }), r(h, "compositionend", () => {
       this._composing = !1, this._suggest();
-    }), r(l, "blur", () => {
+    }), r(h, "blur", () => {
       this._commitText(), this._closeSugg();
-    }), r(a, "keydown", (h) => this._chipKey(h)), r(a, "click", (h) => {
-      const u = h.target.closest(".chip-input__remove");
-      u && (this.remove(u.parentNode.dataset.value), l.focus());
-    }), this.lb && (r(this.lb, "mousedown", (h) => h.preventDefault()), r(this.lb, "click", (h) => {
-      const u = h.target.closest("[role=option]");
+    }), r(a, "keydown", (l) => this._chipKey(l)), r(a, "animationend", (l) => l.target.classList.remove("is-new")), r(a, "click", (l) => {
+      const u = l.target.closest(".chip-input__remove");
+      u && (this.remove(u.parentNode.dataset.value), h.focus());
+    }), this.lb && (r(this.lb, "mousedown", (l) => l.preventDefault()), r(this.lb, "click", (l) => {
+      const u = l.target.closest("[role=option]");
       u && this._pick(u.dataset.value);
     }));
-    const _ = this.target.closest("form");
-    _ && r(_, "reset", () => this.setValues(this._initial));
+    const f = this.target.closest("form");
+    f && r(f, "reset", () => this.setValues(this._initial));
   }
   _addChip(t, e) {
     const i = c("li", "chip-input__chip", { tabindex: "-1" });
@@ -143,9 +143,14 @@ class w {
   }
   _sync() {
     const t = this._values.length;
-    this._values.forEach((e) => this.list.appendChild(this._chips.get(o(e)))), this.root.classList.toggle("is-full", t >= this.max), this.root.classList.toggle("is-nearly-full", this.max !== 1 / 0 && t < this.max && t >= Math.ceil(this.max * 0.8)), this.input.placeholder = t ? "" : this.opts.placeholder, this.opts.name && (this.hidden.textContent = "", this._values.forEach((e) => {
-      const i = c("input", "", { type: "hidden", name: this.opts.name });
-      i.value = e, this.hidden.appendChild(i);
+    let e = this.list.firstChild;
+    this._values.forEach((i) => {
+      const s = this._chips.get(o(i));
+      for (; e && e.classList.contains("is-leaving"); ) e = e.nextSibling;
+      s === e ? e = e.nextSibling : this.list.insertBefore(s, e);
+    }), this.root.classList.toggle("is-full", t >= this.max), this.root.classList.toggle("is-nearly-full", this.max !== 1 / 0 && t < this.max && t >= Math.ceil(this.max * 0.8)), this.input.placeholder = t ? "" : this.opts.placeholder, this.opts.name && (this.hidden.textContent = "", this._values.forEach((i) => {
+      const s = c("input", "", { type: "hidden", name: this.opts.name });
+      s.value = i, this.hidden.appendChild(s);
     }));
   }
   _commitText() {
@@ -203,12 +208,12 @@ class w {
   _chipKey(t) {
     const e = t.target.closest(".chip-input__chip");
     if (!e || t.target !== e) return;
-    const i = e.dataset.value, s = this._values.findIndex((l) => o(l) === o(i)), a = (l) => (l >= this._values.length ? this.input : this._chips.get(o(this._values[Math.max(0, l)]))).focus();
+    const i = e.dataset.value, s = this._values.findIndex((h) => o(h) === o(i)), a = (h) => (h >= this._values.length ? this.input : this._chips.get(o(this._values[Math.max(0, h)]))).focus();
     if (t.altKey && (t.key === "ArrowLeft" || t.key === "ArrowRight")) {
       t.preventDefault();
-      const l = s + (t.key === "ArrowLeft" ? -1 : 1);
-      if (l < 0 || l >= this._values.length) return;
-      this._values = y(this._values, s, l), this._sync(), e.focus(), this._say(`Moved ${i} to position ${l + 1} of ${this._values.length}.`), this._emit("reorder", [i]);
+      const h = s + (t.key === "ArrowLeft" ? -1 : 1);
+      if (h < 0 || h >= this._values.length) return;
+      this._values = y(this._values, s, h), this._sync(), e.focus(), this._say(`Moved ${i} to position ${h + 1} of ${this._values.length}.`), this._emit("reorder", [i]);
     } else t.key === "ArrowLeft" ? (t.preventDefault(), a(s - 1)) : t.key === "ArrowRight" ? (t.preventDefault(), a(s + 1)) : t.key === "Home" ? (t.preventDefault(), a(0)) : t.key === "End" ? (t.preventDefault(), this.input.focus()) : t.key === "Delete" || t.key === "Backspace" ? (t.preventDefault(), this.remove(i), a(Math.min(s, this._values.length))) : (t.key === "Enter" || t.key === "Escape") && (t.preventDefault(), this.input.focus());
   }
   _suggest(t) {
