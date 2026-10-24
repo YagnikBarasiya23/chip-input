@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/YagnikBarasiya23/chip-input"><img src="https://raw.githubusercontent.com/YagnikBarasiya23/chip-input/main/media/banner.png" width="800" alt="Chip Input, a Wiiby component: typed words become paper tags or ink stamps"></a>
+  <img src="https://raw.githubusercontent.com/YagnikBarasiya23/chip-input/main/media/banner.png" width="800" alt="Chip Input, a Wiiby component: typed words become paper tags or ink stamps">
 </p>
 
 <p align="center">
