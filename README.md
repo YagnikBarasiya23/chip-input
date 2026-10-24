@@ -1,12 +1,21 @@
-# Chip Input
+<p align="center">
+  <a href="https://github.com/YagnikBarasiya23/chip-input"><img src="https://raw.githubusercontent.com/YagnikBarasiya23/chip-input/main/media/banner.png" width="800" alt="Chip Input, a Wiiby component: typed words become paper tags or ink stamps"></a>
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/paper-tag-input"><img src="https://img.shields.io/npm/v/paper-tag-input.svg?color=1f2a3a" alt="npm version"></a>
+  <img src="https://img.shields.io/badge/gzip-about%204%20KB-1f2a3a.svg" alt="about 4 KB gzipped">
+  <img src="https://img.shields.io/badge/dependencies-0-1f2a3a.svg" alt="0 dependencies">
+  <a href="https://github.com/YagnikBarasiya23/chip-input/blob/main/LICENSE"><img src="https://img.shields.io/badge/licence-MIT-1f2a3a.svg" alt="MIT licence"></a>
+</p>
 
 > npm package name: `paper-tag-input`.
 
-[![MIT licence](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE)
-
 A tag field where typed words become paper tags, or ink stamps with `variant: 'stamp'`. Paste splits on commas and newlines, Backspace on an empty field pulls the last tag back so you can edit it.
 
-![Chip Input demo](media/demo.gif)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/YagnikBarasiya23/chip-input/main/media/demo-hd.gif" width="800" alt="Typing words into a field turns them into paper tags that swing from a punched hole, and a second field stamps them as ink labels.">
+</p>
 
 Plain HTML, CSS and JS. Zero dependencies. No image files: the tags are drawn in CSS. JS is about 4 KB gzipped.
 
